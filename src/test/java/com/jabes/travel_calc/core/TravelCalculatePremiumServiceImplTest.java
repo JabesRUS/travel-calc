@@ -5,6 +5,10 @@ import com.jabes.travel_calc.rest.TravelCalculatePremiumResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 class TravelCalculatePremiumServiceImplTest {
@@ -55,6 +59,28 @@ class TravelCalculatePremiumServiceImplTest {
 
 
         Assertions.assertEquals(dateToExpected, request.getAgreementDateTo(), "dateTo не совпадает.");
+    }
+
+    @Test
+    public void testCalculatePremium_ReturnsCorrectPrice() {
+        Date dateFromExpected = new Date(2025, 6, 1);
+        Date dateToExpected = new Date(2025, 6, 9);
+        BigDecimal betweenDaysExpected = calculateDaysBetween(dateFromExpected, dateToExpected);
+        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
+                null, null, dateFromExpected, dateToExpected);
+
+        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+
+        Assertions.assertEquals(betweenDaysExpected, response.getAgreementPrice());
+    }
+
+    private static BigDecimal calculateDaysBetween(Date from, Date to) {
+        // Преобразуем java.util.Date в java.time.LocalDate
+        LocalDate fromLocal = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate toLocal = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Вычисляем количество дней между датами
+        return BigDecimal.valueOf(ChronoUnit.DAYS.between(fromLocal, toLocal));
     }
 
 }
