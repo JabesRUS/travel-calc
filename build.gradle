@@ -5,7 +5,26 @@ plugins {
 }
 
 group = 'com.jabes'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
 version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+compileJava {
+	options.encoding = "UTF-8"
+}
+
+compileTestJava {
+	options.encoding = "UTF-8"
+}
+/*Используем кодировку UTF-8.*/
 
 java {
 	toolchain {
