@@ -26,24 +26,13 @@ public class TravelCalculatePremiumResponse {
             String personFirstName,
             String personLastName,
             Date agreementDateFrom,
-            Date agreementDateTo) {
+            Date agreementDateTo,
+            BigDecimal agreementPrice) {
         this.personFirstName = personFirstName;
         this.personLastName = personLastName;
         this.agreementDateFrom = agreementDateFrom;
         this.agreementDateTo = agreementDateTo;
-
-        if (agreementDateFrom != null && agreementDateTo != null) {
-            this.agreementPrice = calculateDaysBetween( agreementDateFrom, agreementDateTo);
-        }
-
+        this.agreementPrice = agreementPrice;
     }
 
-    private static BigDecimal calculateDaysBetween(Date from, Date to) {
-        // Преобразуем java.util.Date в java.time.LocalDate
-        LocalDate fromLocal = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate toLocal = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        // Вычисляем количество дней между датами
-        return BigDecimal.valueOf(ChronoUnit.DAYS.between(fromLocal, toLocal));
-    }
 }

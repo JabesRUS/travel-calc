@@ -6,7 +6,7 @@
 | 4  | 13-task | Написать тесты в классе `TravelCalculatePremiumServiceImplTest` на метод `calculatePremium`.                                      |
 | 5  | 14-task | Изменить класс `TravelCalculatePremiumServiceImplTest`, написать отдельный тестовый метод на каждое поле ответа.                  |
 | 6  | 16-task | Добавить в ответ (`TravelCalculatePremiumResponse`) свойство `agreementPrice` типа `BigDecimal`.                                  |
-| 7  | 17-task |            заполнить в ответе свойство agreementPrice согласно следующей формуле: agreementPrice = days between agreementDateFrom and agreementDateTo                                                                                                                        |
-| 8  | -task   |                                                                                                                                    |
+| 7  | 17-task | заполнить в ответе свойство agreementPrice согласно следующей формуле: agreementPrice = days between agreementDateFrom and agreementDateTo                                                                                                                        |
+| 8  | 18-task | если расчёт стоимости из предыдущего шага был реализован внутри метода calculatePremium(), то вынесите код расчета количества дней между датами в отдельный метод.                                                                                                                                   |
 | 9  | -task   |                                                                                                                                    |
 
