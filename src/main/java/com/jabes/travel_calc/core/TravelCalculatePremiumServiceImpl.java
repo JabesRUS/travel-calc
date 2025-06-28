@@ -13,29 +13,19 @@ import java.util.Date;
 @Component
 class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
 
+    private final DateTimeService dateTimeService = new DateTimeService();
+
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {
         String personFirstName = request.getPersonFirstName();
         String personLastName = request.getPersonLastName();
         Date agreementDateFrom = request.getAgreementDateFrom();
         Date agreementDateTo = request.getAgreementDateTo();
-        BigDecimal agreementPrice = calculateDaysBetween(agreementDateFrom, agreementDateTo);
+        BigDecimal agreementPrice = dateTimeService.calculateDaysBetween(agreementDateFrom, agreementDateTo);
 
         return new TravelCalculatePremiumResponse(
                 personFirstName, personLastName, agreementDateFrom, agreementDateTo, agreementPrice
         );
-    }
-
-    private static BigDecimal calculateDaysBetween(Date from, Date to) {
-        if (from == null || to == null) {
-            return null;
-        }
-        // Преобразуем java.util.Date в java.time.LocalDate
-        LocalDate fromLocal = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate toLocal = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        // Вычисляем количество дней между датами
-        return BigDecimal.valueOf(ChronoUnit.DAYS.between(fromLocal, toLocal));
     }
 
 }
