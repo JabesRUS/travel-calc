@@ -3,6 +3,7 @@ package com.jabes.travel_calc.rest;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -13,11 +14,16 @@ public class TravelCalculatePremiumResponse {
     private String personLastName;
     private Date agreementDateFrom;
     private Date agreementDateTo;
+    private BigDecimal agreementPrice;
 
     public TravelCalculatePremiumResponse() {
     }
 
-    public TravelCalculatePremiumResponse(String personFirstName, String personLastName, Date agreementDateFrom, Date agreementDateTo) {
+    public TravelCalculatePremiumResponse(
+            String personFirstName,
+            String personLastName,
+            Date agreementDateFrom,
+            Date agreementDateTo) {
         this.personFirstName = personFirstName;
         this.personLastName = personLastName;
         this.agreementDateFrom = agreementDateFrom;

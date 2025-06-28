@@ -4,6 +4,7 @@ import com.jabes.travel_calc.rest.TravelCalculatePremiumRequest;
 import com.jabes.travel_calc.rest.TravelCalculatePremiumResponse;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Component
@@ -15,6 +16,7 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
         String personLastName = request.getPersonLastName();
         Date agreementDateFrom = request.getAgreementDateFrom();
         Date agreementDateTo = request.getAgreementDateTo();
+
 
         return new TravelCalculatePremiumResponse(
                 personFirstName, personLastName, agreementDateFrom, agreementDateTo
