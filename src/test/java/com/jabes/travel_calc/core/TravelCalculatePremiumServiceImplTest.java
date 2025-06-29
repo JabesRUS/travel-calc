@@ -3,31 +3,33 @@ package com.jabes.travel_calc.core;
 import com.jabes.travel_calc.rest.TravelCalculatePremiumRequest;
 import com.jabes.travel_calc.rest.TravelCalculatePremiumResponse;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+@ExtendWith(MockitoExtension.class)
 class TravelCalculatePremiumServiceImplTest {
 
-    private DateTimeService dateTimeService;
-    private TravelCalculatePremiumServiceImpl service;
+    @Mock private DateTimeService dateTimeService;
+    @InjectMocks private TravelCalculatePremiumServiceImpl service;
 
-    @BeforeEach
-    public void setUp() {
-        dateTimeService = new DateTimeService();
-        service = new TravelCalculatePremiumServiceImpl(dateTimeService);
-    }
+//    @BeforeEach
+//    public void setUp() {
+//        service = new TravelCalculatePremiumServiceImpl(dateTimeService);
+//    }
 
     @Test
     public void testCalculatePremium_ReturnsCorrectFirstName() {
         String firstNameExpected = "Иван";
         TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
                 firstNameExpected, null, null, null);
+
 
         TravelCalculatePremiumResponse response = service.calculatePremium(request);
 
@@ -73,22 +75,25 @@ class TravelCalculatePremiumServiceImplTest {
     public void testCalculatePremium_ReturnsCorrectPrice() {
         Date dateFromExpected = new Date(2025, 6, 1);
         Date dateToExpected = new Date(2025, 6, 9);
-        BigDecimal betweenDaysExpected = calculateDaysBetween(dateFromExpected, dateToExpected);
+        BigDecimal betweenDaysExpected = BigDecimal.valueOf(8);
         TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
                 null, null, dateFromExpected, dateToExpected);
+        Mockito.when(dateTimeService.calculateDaysBetween(dateFromExpected, dateToExpected))
+                .thenReturn(betweenDaysExpected);
+
 
         TravelCalculatePremiumResponse response = service.calculatePremium(request);
 
         Assertions.assertEquals(betweenDaysExpected, response.getAgreementPrice());
     }
 
-    private static BigDecimal calculateDaysBetween(Date from, Date to) {
-        // Преобразуем java.util.Date в java.time.LocalDate
-        LocalDate fromLocal = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate toLocal = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        // Вычисляем количество дней между датами
-        return BigDecimal.valueOf(ChronoUnit.DAYS.between(fromLocal, toLocal));
-    }
+//    private static BigDecimal calculateDaysBetween(Date from, Date to) {
+//        // Преобразуем java.util.Date в java.time.LocalDate
+//        LocalDate fromLocal = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDate toLocal = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//
+//        // Вычисляем количество дней между датами
+//        return BigDecimal.valueOf(ChronoUnit.DAYS.between(fromLocal, toLocal));
+//    }
 
 }
