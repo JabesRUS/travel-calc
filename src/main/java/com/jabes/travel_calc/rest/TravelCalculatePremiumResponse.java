@@ -1,16 +1,17 @@
 package com.jabes.travel_calc.rest;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TravelCalculatePremiumResponse {
 
     private String personFirstName;
@@ -18,21 +19,5 @@ public class TravelCalculatePremiumResponse {
     private Date agreementDateFrom;
     private Date agreementDateTo;
     private BigDecimal agreementPrice;
-
-    public TravelCalculatePremiumResponse() {
-    }
-
-    public TravelCalculatePremiumResponse(
-            String personFirstName,
-            String personLastName,
-            Date agreementDateFrom,
-            Date agreementDateTo,
-            BigDecimal agreementPrice) {
-        this.personFirstName = personFirstName;
-        this.personLastName = personLastName;
-        this.agreementDateFrom = agreementDateFrom;
-        this.agreementDateTo = agreementDateTo;
-        this.agreementPrice = agreementPrice;
-    }
 
 }
