@@ -1,11 +1,14 @@
 package com.jabes.travel_calc.core;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+@Component
 public class DateTimeService {
 
     public BigDecimal calculateDaysBetween(Date from, Date to) {

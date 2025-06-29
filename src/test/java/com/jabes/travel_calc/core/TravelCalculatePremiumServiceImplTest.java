@@ -3,6 +3,7 @@ package com.jabes.travel_calc.core;
 import com.jabes.travel_calc.rest.TravelCalculatePremiumRequest;
 import com.jabes.travel_calc.rest.TravelCalculatePremiumResponse;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,7 +14,14 @@ import java.util.Date;
 
 class TravelCalculatePremiumServiceImplTest {
 
-    private final TravelCalculatePremiumServiceImpl calculate = new TravelCalculatePremiumServiceImpl();
+    private DateTimeService dateTimeService;
+    private TravelCalculatePremiumServiceImpl service;
+
+    @BeforeEach
+    public void setUp() {
+        dateTimeService = new DateTimeService();
+        service = new TravelCalculatePremiumServiceImpl(dateTimeService);
+    }
 
     @Test
     public void testCalculatePremium_ReturnsCorrectFirstName() {
@@ -21,7 +29,7 @@ class TravelCalculatePremiumServiceImplTest {
         TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
                 firstNameExpected, null, null, null);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = service.calculatePremium(request);
 
         Assertions.assertEquals(firstNameExpected, response.getPersonFirstName(), "Имена должны совпадать.");
     }
@@ -32,7 +40,7 @@ class TravelCalculatePremiumServiceImplTest {
         TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
                 null, lastNameExpected, null, null);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = service.calculatePremium(request);
 
         Assertions.assertEquals(lastNameExpected, request.getPersonLastName(), "Фамилии должны совпадать.");
     }
@@ -43,7 +51,7 @@ class TravelCalculatePremiumServiceImplTest {
         TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
                 null, null, dateFromExpected, null);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = service.calculatePremium(request);
 
         Assertions.assertEquals(dateFromExpected, request.getAgreementDateFrom(), "dateFrom не совпадают.");
 
@@ -55,7 +63,7 @@ class TravelCalculatePremiumServiceImplTest {
         TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
                 null, null, null, dateToExpected);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = service.calculatePremium(request);
 
 
         Assertions.assertEquals(dateToExpected, request.getAgreementDateTo(), "dateTo не совпадает.");
@@ -69,7 +77,7 @@ class TravelCalculatePremiumServiceImplTest {
         TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
                 null, null, dateFromExpected, dateToExpected);
 
-        TravelCalculatePremiumResponse response = calculate.calculatePremium(request);
+        TravelCalculatePremiumResponse response = service.calculatePremium(request);
 
         Assertions.assertEquals(betweenDaysExpected, response.getAgreementPrice());
     }
