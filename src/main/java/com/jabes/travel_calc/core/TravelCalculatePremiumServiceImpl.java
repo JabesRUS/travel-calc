@@ -2,22 +2,18 @@ package com.jabes.travel_calc.core;
 
 import com.jabes.travel_calc.rest.TravelCalculatePremiumRequest;
 import com.jabes.travel_calc.rest.TravelCalculatePremiumResponse;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
 
     private final DateTimeService dateTimeService;
-
-    public TravelCalculatePremiumServiceImpl(DateTimeService dateTimeService) {
-        this.dateTimeService = dateTimeService;
-    }
 
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {
