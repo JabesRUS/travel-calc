@@ -6,7 +6,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Date;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 class TravelCalculatePremiumRequestValidatorTest {
@@ -15,69 +19,90 @@ class TravelCalculatePremiumRequestValidatorTest {
 
     @Test
     public void shouldReturnErrorWhenFirstNameIsNull() {
-        TravelCalculatePremiumRequest request = Mockito.mock(TravelCalculatePremiumRequest.class);
-        Mockito.when(request.getPersonFirstName()).thenReturn(null);
-        Mockito.when(request.getPersonLastName()).thenReturn("LastName");
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        when(request.getPersonFirstName()).thenReturn(null);
+        when(request.getPersonLastName()).thenReturn("LastName");
+        when(request.getAgreementDateFrom()).thenReturn(new Date());
 
         List<ValidationError> errors = requestValidator.validate(request);
 
-        Assertions.assertFalse(errors.isEmpty());
-        Assertions.assertEquals(1, errors.size());
-        Assertions.assertEquals("personFirstName", errors.get(0).getField());
-        Assertions.assertEquals("Must not be empty.", errors.get(0).getMessage());
+        assertFalse(errors.isEmpty());
+        assertEquals(1, errors.size());
+        assertEquals("personFirstName", errors.get(0).getField());
+        assertEquals("Must not be empty.", errors.get(0).getMessage());
     }
 
     @Test
     public void shouldReturnErrorWhenFirstNameIsEmpty() {
-        TravelCalculatePremiumRequest request = Mockito.mock(TravelCalculatePremiumRequest.class);
-        Mockito.when(request.getPersonFirstName()).thenReturn("");
-        Mockito.when(request.getPersonLastName()).thenReturn("LastName");
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        when(request.getPersonFirstName()).thenReturn("");
+        when(request.getPersonLastName()).thenReturn("LastName");
+        when(request.getAgreementDateFrom()).thenReturn(new Date());
 
         List<ValidationError> errors = requestValidator.validate(request);
 
-        Assertions.assertFalse(errors.isEmpty());
-        Assertions.assertEquals(1, errors.size());
-        Assertions.assertEquals("personFirstName", errors.get(0).getField());
-        Assertions.assertEquals("Must not be empty.", errors.get(0).getMessage());
+        assertFalse(errors.isEmpty());
+        assertEquals(1, errors.size());
+        assertEquals("personFirstName", errors.get(0).getField());
+        assertEquals("Must not be empty.", errors.get(0).getMessage());
     }
 
     @Test
     public void shouldReturnErrorWhenLastNameIsNull() {
-        TravelCalculatePremiumRequest request = Mockito.mock(TravelCalculatePremiumRequest.class);
-        Mockito.when(request.getPersonFirstName()).thenReturn("FirstName");
-        Mockito.when(request.getPersonLastName()).thenReturn(null);
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        when(request.getPersonFirstName()).thenReturn("FirstName");
+        when(request.getPersonLastName()).thenReturn(null);
+        when(request.getAgreementDateFrom()).thenReturn(new Date());
 
         List<ValidationError> errors = requestValidator.validate(request);
 
-        Assertions.assertFalse(errors.isEmpty());
-        Assertions.assertEquals(1, errors.size());
-        Assertions.assertEquals("personLastName", errors.get(0).getField());
-        Assertions.assertEquals("Must not be empty.", errors.get(0).getMessage());
+        assertFalse(errors.isEmpty());
+        assertEquals(1, errors.size());
+        assertEquals("personLastName", errors.get(0).getField());
+        assertEquals("Must not be empty.", errors.get(0).getMessage());
     }
 
     @Test
     public void shouldReturnErrorWhenLastNameIsEmpty() {
-        TravelCalculatePremiumRequest request = Mockito.mock(TravelCalculatePremiumRequest.class);
-        Mockito.when(request.getPersonFirstName()).thenReturn("FirstName");
-        Mockito.when(request.getPersonLastName()).thenReturn("");
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        when(request.getPersonFirstName()).thenReturn("FirstName");
+        when(request.getPersonLastName()).thenReturn("");
+        when(request.getAgreementDateFrom()).thenReturn(new Date());
 
         List<ValidationError> errors = requestValidator.validate(request);
 
-        Assertions.assertFalse(errors.isEmpty());
-        Assertions.assertEquals(1, errors.size());
-        Assertions.assertEquals("personLastName", errors.get(0).getField());
-        Assertions.assertEquals("Must not be empty.", errors.get(0).getMessage());
+        assertFalse(errors.isEmpty());
+        assertEquals(1, errors.size());
+        assertEquals("personLastName", errors.get(0).getField());
+        assertEquals("Must not be empty.", errors.get(0).getMessage());
     }
 
     @Test
     public void shouldNotReturnErrorWhenPersonAndLastNameIsValid() {
-        TravelCalculatePremiumRequest request = Mockito.mock(TravelCalculatePremiumRequest.class);
-        Mockito.when(request.getPersonFirstName()).thenReturn("FirstName");
-        Mockito.when(request.getPersonLastName()).thenReturn("LastName");
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        when(request.getPersonFirstName()).thenReturn("FirstName");
+        when(request.getPersonLastName()).thenReturn("LastName");
+        when(request.getAgreementDateFrom()).thenReturn(new Date());
 
         List<ValidationError> errors = requestValidator.validate(request);
 
-        Assertions.assertTrue(errors.isEmpty());
+        assertTrue(errors.isEmpty());
+
+    }
+
+    @Test
+    public void shouldReturnErrorWhenAgreementDateFromIsNull() {
+        TravelCalculatePremiumRequest request = mock(TravelCalculatePremiumRequest.class);
+        when(request.getPersonFirstName()).thenReturn("FirstName");
+        when(request.getPersonLastName()).thenReturn("LastName");
+        when(request.getAgreementDateFrom()).thenReturn(null);
+
+        List<ValidationError> errors = requestValidator.validate(request);
+
+        assertFalse(errors.isEmpty());
+        assertEquals(1, errors.size());
+        assertEquals("agreementDateFrom", errors.get(0).getField());
+        assertEquals("Must not be empty.", errors.get(0).getMessage());
 
     }
 
