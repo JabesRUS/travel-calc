@@ -1,8 +1,8 @@
 package com.jabes.travel_calc.core;
 
 
-import com.jabes.travel_calc.rest.TravelCalculatePremiumRequest;
-import com.jabes.travel_calc.rest.TravelCalculatePremiumResponse;
+import com.jabes.travel_calc.dto.TravelCalculatePremiumRequest;
+import com.jabes.travel_calc.dto.TravelCalculatePremiumResponse;
 
 public interface TravelCalculatePremiumService {
 

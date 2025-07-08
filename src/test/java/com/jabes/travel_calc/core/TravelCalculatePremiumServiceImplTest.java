@@ -1,7 +1,7 @@
 package com.jabes.travel_calc.core;
 
-import com.jabes.travel_calc.rest.TravelCalculatePremiumRequest;
-import com.jabes.travel_calc.rest.TravelCalculatePremiumResponse;
+import com.jabes.travel_calc.dto.TravelCalculatePremiumRequest;
+import com.jabes.travel_calc.dto.TravelCalculatePremiumResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package com.jabes.travel_calc.rest;
+package com.jabes.travel_calc.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

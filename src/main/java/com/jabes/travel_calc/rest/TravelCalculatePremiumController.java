@@ -1,6 +1,8 @@
 package com.jabes.travel_calc.rest;
 
 import com.jabes.travel_calc.core.TravelCalculatePremiumService;
+import com.jabes.travel_calc.dto.TravelCalculatePremiumRequest;
+import com.jabes.travel_calc.dto.TravelCalculatePremiumResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
