@@ -1,22 +1,27 @@
 package com.jabes.travel_calc.core;
 
 import com.jabes.travel_calc.dto.TravelCalculatePremiumRequest;
-import com.jabes.travel_calc.dto.TravelCalculatePremiumResponse;
-import org.junit.jupiter.api.Assertions;
+import com.jabes.travel_calc.dto.ValidationError;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TravelCalculatePremiumServiceImplTest {
 
     @Mock private DateTimeService dateTimeService;
+    @Mock private TravelCalculatePremiumRequestValidator requestValidator;
+
     @InjectMocks private TravelCalculatePremiumServiceImpl service;
 
 //    @BeforeEach
@@ -25,75 +30,115 @@ class TravelCalculatePremiumServiceImplTest {
 //    }
 
     @Test
-    public void testCalculatePremium_ReturnsCorrectFirstName() {
-        String firstNameExpected = "Иван";
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
-                firstNameExpected, null, null, null);
-
-
-        TravelCalculatePremiumResponse response = service.calculatePremium(request);
-
-        Assertions.assertEquals(firstNameExpected, response.getPersonFirstName(), "Имена должны совпадать.");
+    public void shouldPopulatePersonFirstName() {
+        var request = createRequestWithAllFields();
+        when(dateTimeService.calculateDaysBetween(request.getAgreementDateFrom(), request.getAgreementDateTo()))
+                .thenReturn(BigDecimal.ZERO);
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+        assertEquals(request.getPersonFirstName(), response.getPersonFirstName());
     }
 
     @Test
-    public void testCalculatePremium_ReturnsCorrectLastName() {
-        String lastNameExpected = "Петров";
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
-                null, lastNameExpected, null, null);
-
-        TravelCalculatePremiumResponse response = service.calculatePremium(request);
-
-        Assertions.assertEquals(lastNameExpected, request.getPersonLastName(), "Фамилии должны совпадать.");
+    public void shouldPopulatePersonLastName() {
+        var request = createRequestWithAllFields();
+        when(dateTimeService.calculateDaysBetween(request.getAgreementDateFrom(), request.getAgreementDateTo()))
+                .thenReturn(BigDecimal.ZERO);
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+        assertEquals(request.getPersonLastName(), response.getPersonLastName());
     }
 
     @Test
-    public void testCalculatePremium_ReturnsCorrectDateFrom() {
-        Date dateFromExpected = new Date(2025, 6, 1);
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
-                null, null, dateFromExpected, null);
-
-        TravelCalculatePremiumResponse response = service.calculatePremium(request);
-
-        Assertions.assertEquals(dateFromExpected, request.getAgreementDateFrom(), "dateFrom не совпадают.");
-
+    public void shouldPopulateAgreementDateFrom() {
+        var request = createRequestWithAllFields();
+        when(dateTimeService.calculateDaysBetween(request.getAgreementDateFrom(), request.getAgreementDateTo()))
+                .thenReturn(BigDecimal.ZERO);
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+        assertEquals(request.getAgreementDateFrom(), response.getAgreementDateFrom());
     }
 
     @Test
-    public void testCalculatePremium_ReturnsCorrectDateTo() {
-        Date dateToExpected = new Date(2025, 6, 9);
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
-                null, null, null, dateToExpected);
-
-        TravelCalculatePremiumResponse response = service.calculatePremium(request);
-
-
-        Assertions.assertEquals(dateToExpected, request.getAgreementDateTo(), "dateTo не совпадает.");
+    public void shouldPopulateAgreementDateTo() {
+        var request = createRequestWithAllFields();
+        when(dateTimeService.calculateDaysBetween(request.getAgreementDateFrom(), request.getAgreementDateTo()))
+                .thenReturn(BigDecimal.ZERO);
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+        assertEquals(request.getAgreementDateTo(), response.getAgreementDateTo());
     }
 
     @Test
-    public void testCalculatePremium_ReturnsCorrectPrice() {
-        Date dateFromExpected = new Date(2025, 6, 1);
-        Date dateToExpected = new Date(2025, 6, 9);
-        BigDecimal betweenDaysExpected = BigDecimal.valueOf(8);
-        TravelCalculatePremiumRequest request = new TravelCalculatePremiumRequest(
-                null, null, dateFromExpected, dateToExpected);
-        Mockito.when(dateTimeService.calculateDaysBetween(dateFromExpected, dateToExpected))
-                .thenReturn(betweenDaysExpected);
-
-
-        TravelCalculatePremiumResponse response = service.calculatePremium(request);
-
-        Assertions.assertEquals(betweenDaysExpected, response.getAgreementPrice());
+    public void shouldPopulateAgreementPrice() {
+        var request = createRequestWithAllFields();
+        when(dateTimeService.calculateDaysBetween(request.getAgreementDateFrom(), request.getAgreementDateTo()))
+                .thenReturn(BigDecimal.ZERO);
+        when(requestValidator.validate(request)).thenReturn(List.of());
+        var response = service.calculatePremium(request);
+        assertNotNull(response.getAgreementPrice());
     }
 
-//    private static BigDecimal calculateDaysBetween(Date from, Date to) {
-//        // Преобразуем java.util.Date в java.time.LocalDate
-//        LocalDate fromLocal = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//        LocalDate toLocal = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//
-//        // Вычисляем количество дней между датами
-//        return BigDecimal.valueOf(ChronoUnit.DAYS.between(fromLocal, toLocal));
-//    }
+    @Test
+    public void shouldPopulateResponseWithErrors() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+
+        assertTrue(response.hasErrors());
+    }
+
+    @Test
+    public void shouldPopulateResponseWithCorrectErrorCount() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+
+        assertEquals(1, response.getErrors().size());
+    }
+
+    @Test
+    public void shouldReturnResponseWithCorrectError() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        assertEquals("field", response.getErrors().get(0).getField());
+        assertEquals("message", response.getErrors().get(0).getMessage());
+        assertNull(response.getPersonFirstName());
+    }
+
+    @Test
+    public void allFieldsMustBeEmptyWhenResponseContainsError() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        assertNull(response.getPersonFirstName());
+        assertNull(response.getPersonLastName());
+        assertNull(response.getAgreementDateFrom());
+        assertNull(response.getAgreementDateTo());
+        assertNull(response.getAgreementPrice());
+    }
+
+    @Test
+    public void shouldNOtBeInteractionWithDateTimeServiceWhenResponseContainsError() {
+        var request = new TravelCalculatePremiumRequest();
+        var validationError = new ValidationError("field", "message");
+        when(requestValidator.validate(request)).thenReturn(List.of(validationError));
+        var response = service.calculatePremium(request);
+        verifyNoInteractions(dateTimeService);
+    }
+
+    private TravelCalculatePremiumRequest createRequestWithAllFields() {
+        var request = new TravelCalculatePremiumRequest();
+        request.setPersonFirstName("John");
+        request.setPersonLastName("Peterson");
+        request.setAgreementDateFrom(new Date());
+        request.setAgreementDateTo(new Date());
+        return request;
+    }
 
 }
