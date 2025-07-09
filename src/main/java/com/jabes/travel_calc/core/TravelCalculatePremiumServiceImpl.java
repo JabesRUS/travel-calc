@@ -16,13 +16,13 @@ import java.util.List;
 class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
 
     private final TravelCalculatePremiumRequestValidator requestValidator;
-    private final DateTimeService dateTimeService;
+    private final TravelPremiumUnderwriting premiumUnderwriting;
 
     @Override
     public TravelCalculatePremiumResponse calculatePremium(TravelCalculatePremiumRequest request) {
         List<ValidationError> errors = requestValidator.validate(request);
         return  (errors.isEmpty())
-                ? createResponse(request)
+                ? createResponse(request, premiumUnderwriting.calculatePremium(request))
                 : createResponse(errors);
 
     }
@@ -31,16 +31,15 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
         return new TravelCalculatePremiumResponse(errors);
     }
 
-    private TravelCalculatePremiumResponse createResponse(TravelCalculatePremiumRequest request) {
-        String personFirstName = request.getPersonFirstName();
-        String personLastName = request.getPersonLastName();
-        Date agreementDateFrom = request.getAgreementDateFrom();
-        Date agreementDateTo = request.getAgreementDateTo();
-        BigDecimal agreementPrice = dateTimeService.calculateDaysBetween(agreementDateFrom, agreementDateTo);
+    private TravelCalculatePremiumResponse createResponse(TravelCalculatePremiumRequest request, BigDecimal premium) {
+        TravelCalculatePremiumResponse response = new TravelCalculatePremiumResponse();
+        response.setPersonFirstName(request.getPersonFirstName());
+        response.setPersonLastName(request.getPersonLastName());
+        response.setAgreementDateFrom(request.getAgreementDateFrom());
+        response.setAgreementDateTo(request.getAgreementDateTo());
+        response.setAgreementPrice(premium);
 
-        return new TravelCalculatePremiumResponse(
-                personFirstName, personLastName, agreementDateFrom, agreementDateTo, agreementPrice
-        );
+        return response;
     }
 
 }
